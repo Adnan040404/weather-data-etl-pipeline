@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Weather report</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; margin: 32px auto; max-width: 980px; color: #252423; }
+  h1 { color: #1F3864; margin-bottom: 4px; }
+  .sub { color: #595959; margin-bottom: 24px; }
+  h2 { color: #2F5597; margin-top: 32px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th { background: #1F3864; color: #fff; text-align: left; padding: 8px 10px; }
+  td { border-bottom: 1px solid #d9dee7; padding: 7px 10px; }
+  tr:nth-child(even) td { background: #f5f8fc; }
+  .charts { display: flex; flex-wrap: wrap; gap: 16px; }
+  .charts img { max-width: 100%; border: 1px solid #d9dee7; border-radius: 4px; }
+  .note { color: #595959; font-size: 13px; margin-top: 28px; }
+</style>
+</head>
+<body>
+  <h1>Weather report</h1>
+  <div class="sub">{{ n_readings }} readings across {{ n_cities }} cities, {{ first }} to {{ last }} (UTC).
+    Source: {{ source_label }}.</div>
+
+  <h2>Latest reading per city</h2>
+  <table>
+    <tr><th>City</th><th>Observed (UTC)</th><th>Temp (&deg;C)</th><th>Humidity (%)</th>
+        <th>Wind (m/s)</th><th>Conditions</th><th>Feels</th></tr>
+    {% for r in latest %}
+    <tr><td>{{ r.city }}</td><td>{{ r.observed_at }}</td><td>{{ "%.1f"|format(r.temperature_c) }}</td>
+        <td>{{ r.humidity_pct }}</td><td>{{ "%.1f"|format(r.wind_speed_ms) }}</td>
+        <td>{{ r.conditions }}</td><td>{{ r.temp_category }}, {{ r.wind_category|lower }}</td></tr>
+    {% endfor %}
+  </table>
+
+  <h2>Charts</h2>
+  <div class="charts">
+    <img src="temperature_trend.png" alt="Temperature trend by city" width="620">
+    <img src="latest_temperature.png" alt="Latest temperature by city" width="380">
+    <img src="conditions.png" alt="Weather conditions" width="380">
+  </div>
+
+  <h2>City summary</h2>
+  <table>
+    <tr><th>City</th><th>Readings</th><th>Avg temp</th><th>Min</th><th>Max</th><th>Avg humidity</th><th>Avg wind</th></tr>
+    {% for r in summary %}
+    <tr><td>{{ r.city }}</td><td>{{ r.readings }}</td><td>{{ r.avg_temp_c }}</td>
+        <td>{{ r.min_temp_c }}</td><td>{{ r.max_temp_c }}</td><td>{{ r.avg_humidity_pct|int }}</td>
+        <td>{{ r.avg_wind_ms }}</td></tr>
+    {% endfor %}
+  </table>
+
+  <div class="note">Generated {{ generated }}. {{ disclaimer }}</div>
+</body>
+</html>

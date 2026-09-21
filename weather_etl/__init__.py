@@ -1,0 +1,1 @@
+"""Weather data ETL pipeline."""
