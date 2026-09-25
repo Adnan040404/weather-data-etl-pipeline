@@ -1,5 +1,7 @@
 # Weather Data ETL Pipeline
 
+![tests](https://github.com/Adnan040404/weather-data-etl-pipeline/actions/workflows/tests.yml/badge.svg)
+
 A small but complete data pipeline. It pulls current weather for a list of cities
 from the OpenWeatherMap API, checks every reading, stores the good ones in a SQL
 database, and produces an HTML report, an Excel file and charts.
